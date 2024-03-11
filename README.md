@@ -1,4 +1,4 @@
-Early testing for BLE transmission between 2 ESP32s
+Early testing for Bluetooth transmission between 2 ESP32s
 
 ESP MAC Addresses
 
