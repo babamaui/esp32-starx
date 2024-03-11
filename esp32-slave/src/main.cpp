@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include "BluetoothSerial.h"
 
-#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-#endif
+// #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+// #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+// #endif
 
 // TEST: toggle LED via bluetooth
 const int LED_PIN = 2;
@@ -12,12 +12,11 @@ BluetoothSerial SerialBT;
 
 void setup(void)
 {
-  // TEST: toggle LED via bluetooth
-  pinMode(LED_PIN, OUTPUT);
-
   Serial.begin(9600);
   SerialBT.begin("ESP32test");
   Serial.println("The device started, now you can pair it with bluetooth!");
+  // TEST: toggle LED via bluetooth
+  pinMode(LED_PIN, OUTPUT);
 }
 
 uint8_t calculate_checksum(uint8_t *data)
