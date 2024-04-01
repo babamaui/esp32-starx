@@ -10,6 +10,7 @@
 
 // Possibly helpful: https://randomnerdtutorials.com/esp32-ble-server-environmental-sensing-service/
 // Latency: https://forum.arduino.cc/t/arduino-nan-ble-33-how-to-send-data/632690/6
+// Latency fix??: https://forum.arduino.cc/t/ble-very-weak-signal/631751/29
 
 // Onboard LED pin for testing
 const int LED_PIN = 2;
@@ -198,8 +199,9 @@ void loop()
     // Put the acceleration values into a byte array
     uint8_t accelerationData[12];
     memcpy(accelerationData, &x, sizeof(x));
-    memcpy(accelerationData + 4, &y, sizeof(y));
-    memcpy(accelerationData + 8, &z, sizeof(z));
+    // memcpy(accelerationData, &x, sizeof(x));
+    // memcpy(accelerationData + 4, &y, sizeof(y));
+    // memcpy(accelerationData + 8, &z, sizeof(z));
 
     // Notify the client of the acceleration values
     AccelerationCharacteristic.setValue(accelerationData, 12);

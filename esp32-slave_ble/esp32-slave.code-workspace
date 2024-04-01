@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../esp32-slave"
+		},
+		{
+			"name": "esp32-slave_ble",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
