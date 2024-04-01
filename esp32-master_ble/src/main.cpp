@@ -141,7 +141,7 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
 
   // Start serial communication
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Create the BLE Device
   BLEDevice::init(bleServerName);
@@ -207,7 +207,10 @@ void loop()
     AccelerationCharacteristic.setValue(accelerationData, 12);
     AccelerationCharacteristic.notify();
   }
-
+  else
+  {
+    Serial.println("Fatal: Connection severed.");
+  }
   // Change this when actually using it
-  delay(1000);
+  delay(100);
 }
