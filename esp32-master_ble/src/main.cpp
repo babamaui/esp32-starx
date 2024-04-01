@@ -45,6 +45,7 @@ class MyServerCallbacks : public BLEServerCallbacks
     Serial.println("Device Disconnected");
     // Turn off LED when connection is lost
     digitalWrite(LED_PIN, LOW);
+    pServer->startAdvertising();
   }
 };
 
@@ -160,7 +161,7 @@ void setup()
   mpuService->start();
 
   // Start advertising
-  pServer->getAdvertising()->start();
+  pServer->startAdvertising();
   Serial.println("Waiting a client connection to notify...");
 }
 
@@ -209,7 +210,8 @@ void loop()
   }
   else
   {
-    Serial.println("Fatal: Connection severed.");
+    Serial.println("No connection available.");
+    delay(10000);
   }
   // Change this when actually using it
   delay(100);
