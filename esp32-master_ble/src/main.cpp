@@ -198,21 +198,23 @@ void loop()
     float z = a.acceleration.z;
 
     // Put the acceleration values into a byte array
-    uint8_t accelerationData[12];
+    uint8_t accelerationData[4];
     memcpy(accelerationData, &x, sizeof(x));
-    // memcpy(accelerationData, &x, sizeof(x));
     // memcpy(accelerationData + 4, &y, sizeof(y));
     // memcpy(accelerationData + 8, &z, sizeof(z));
 
     // Notify the client of the acceleration values
-    AccelerationCharacteristic.setValue(accelerationData, 12);
+    AccelerationCharacteristic.setValue(accelerationData, 4);
     AccelerationCharacteristic.notify();
   }
+
+  // If no connection is present, wait 10 seconds before looping again
   else
   {
     Serial.println("No connection available.");
     delay(10000);
   }
+
   // Change this when actually using it
   delay(100);
 }
