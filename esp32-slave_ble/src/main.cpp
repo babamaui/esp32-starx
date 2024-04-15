@@ -28,6 +28,14 @@ char *accelerationChar;
 // Checkers for whether new readings are available
 bool newData = false;
 
+// When server sends notify of red characteristic
+void accelerationCallback(BLERemoteCharacteristic *pBLERemoteCharacteristic, uint8_t *pData, size_t length, bool isNotify)
+{
+  // store temperature value
+  accelerationChar = (char *)pData;
+  newData = true;
+}
+
 // Connect to the BLE Server that has matching name, service, and characteristics
 bool connectToServer(BLEAddress pAddress)
 {
@@ -77,19 +85,10 @@ class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks
   }
 };
 
-// When server sends notify of red characteristic
-static void accelerationCallback(BLERemoteCharacteristic *pBLERemoteCharacteristic,
-                                 uint8_t *pData, size_t length, bool isNotify)
-{
-  // store temperature value
-  accelerationChar = (char *)pData;
-  newData = true;
-}
-
 void setup()
 {
   // Initialize Serial communication
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Starting BLE client...");
 
   // Initialize BLE device
@@ -122,9 +121,28 @@ void loop()
   if (newData)
   {
     newData = false;
-    Serial.println(accelerationChar);
+
+    std::string input = accelerationCharacteristic->readValue();
+
+    // Convert string to byte array
+    const uint8_t *data = reinterpret_cast<const uint8_t *>(input.c_str());
+
+    float x, y, z;
+
+    // Unpack the data into x and y
+    memcpy(&x, data, sizeof(x));
+    memcpy(&y, data + 4, sizeof(y));
+    memcpy(&z, data + 8, sizeof(z));
+
+    // Print the values
+    Serial.print("X: ");
+    Serial.print(x);
+    Serial.print(" Y: ");
+    Serial.println(y);
+    Serial.print(" Z: ");
+    Serial.println(z);
   }
 
-  // 500ms delay between loops
-  delay(500);
+  // 10ms delay between loops
+  delay(10);
 }

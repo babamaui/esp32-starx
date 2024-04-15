@@ -141,6 +141,9 @@ void setup()
   // Set LED pin as output
   pinMode(LED_PIN, OUTPUT);
 
+  // Initialize MPU6050
+  setupMPU6050();
+
   // Start serial communication
   Serial.begin(9600);
 
@@ -198,13 +201,13 @@ void loop()
     float z = a.acceleration.z;
 
     // Put the acceleration values into a byte array
-    uint8_t accelerationData[4];
+    uint8_t accelerationData[12];
     memcpy(accelerationData, &x, sizeof(x));
-    // memcpy(accelerationData + 4, &y, sizeof(y));
-    // memcpy(accelerationData + 8, &z, sizeof(z));
+    memcpy(accelerationData + 4, &y, sizeof(y));
+    memcpy(accelerationData + 8, &z, sizeof(z));
 
     // Notify the client of the acceleration values
-    AccelerationCharacteristic.setValue(accelerationData, 4);
+    AccelerationCharacteristic.setValue(accelerationData, 12);
     AccelerationCharacteristic.notify();
   }
 
@@ -212,7 +215,7 @@ void loop()
   else
   {
     Serial.println("No connection available.");
-    delay(10000);
+    delay(10);
   }
 
   // Change this when actually using it
